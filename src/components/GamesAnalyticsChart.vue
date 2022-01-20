@@ -1,22 +1,34 @@
+<template>
+    <PieChart v-if="chartData" :chart-data="chartData" :options="options"></PieChart>
+</template>
+
 <script lang="ts">
-import { Pie, mixins } from 'vue-chartjs'
-import { Chart } from 'chart.js'
+import { PieChart } from 'vue-chart-3';
+import { ChartData, ChartOptions, PieDataPoint } from 'chart.js'
 import { Component, Vue } from 'vue-property-decorator'
 import axios from 'axios'
 import randomColor from 'randomcolor'
 
 @Component({
-    extends: Pie,
-    mixins: [mixins.reactiveData]
+    components: {
+        PieChart,
+    },
 })
-export default class GamesAnalyticsChart extends Vue<Pie> {
-    private options: Chart.ChartOptions = {
-        title: {
-            display: true,
-            fontSize: 20,
-            text: 'Games Requested (Last 5 Minutes)'
-        }
+export default class GamesAnalyticsChart extends Vue {
+    // noinspection JSUnusedLocalSymbols
+    private options: ChartOptions = {
+        plugins: {
+            title: {
+                display: true,
+                font: {
+                    size: 20,
+                },
+                text: 'Games Requested (Last 5 Minutes)',
+            }
+        },
     };
+
+    private chartData?: ChartData<'pie', PieDataPoint[], string> | null = null;
 
     constructor () {
         super()
@@ -31,24 +43,18 @@ export default class GamesAnalyticsChart extends Vue<Pie> {
 
         const colors = Object.keys(games).map(k => randomColor({
             seed: k,
-            luminosity: 'bright'
+            luminosity: 'bright',
         }))
         const data = Object.values(games)
         const labels = Object.keys(games)
 
-        // @ts-ignore
         this.chartData = {
             labels,
             datasets: [{
                 backgroundColor: colors,
                 data,
-            }]
+            }],
         }
-    }
-
-    public mounted (): void {
-        // @ts-ignore
-        this.renderChart(this.chartData, this.options);
     }
 }
 </script>

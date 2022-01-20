@@ -2,8 +2,8 @@
     <div id="analytics-screen">
         <h3>Analytics</h3>
         <div class="analytics-row">
-            <games-analytics-chart :styles="chartStyles"></games-analytics-chart>
-            <games-success-chart :styles="chartStyles"></games-success-chart>
+            <games-analytics-chart :style="chartStyles"></games-analytics-chart>
+            <games-success-chart :style="chartStyles"></games-success-chart>
         </div>
     </div>
 </template>
@@ -17,9 +17,10 @@ import GamesSuccessChart from '@/components/GamesSuccessChart.vue'
     components: { GamesSuccessChart, GamesAnalyticsChart }
 })
 export default class AnalyticsScreen extends Vue {
-    get chartStyles (): any {
+    get chartStyles (): unknown {
         return {
-            width: '30%',
+            width: '40%',
+            height: '500px',
             position: 'relative'
         }
     }

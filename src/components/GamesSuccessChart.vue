@@ -1,21 +1,33 @@
+<template>
+    <PieChart v-if="chartData" :chart-data="chartData" :options="options"></PieChart>
+</template>
+
 <script lang="ts">
-import { Pie, mixins } from 'vue-chartjs'
-import { Chart } from 'chart.js'
+import { PieChart } from 'vue-chart-3';
+import { ChartData, ChartOptions, PieDataPoint } from 'chart.js'
 import { Component, Vue } from 'vue-property-decorator'
 import axios from 'axios'
 
 @Component({
-    extends: Pie,
-    mixins: [mixins.reactiveData]
+    components: {
+        PieChart
+    }
 })
-export default class GamesSuccessChart extends Vue<Pie> {
-    private options: Chart.ChartOptions = {
-        title: {
-            display: true,
-            fontSize: 20,
-            text: 'Game Database Hit/Miss (Last 5 Minutes)'
-        }
+export default class GamesSuccessChart extends Vue {
+    // noinspection JSUnusedLocalSymbols
+    private options: ChartOptions = {
+        plugins: {
+            title: {
+                display: true,
+                font: {
+                    size: 20,
+                },
+                text: 'Game Database Hit/Miss (Last 5 Minutes)',
+            },
+        },
     };
+
+    private chartData?: ChartData<'pie', PieDataPoint[], string> | null = null;
 
     constructor () {
         super()
@@ -32,19 +44,13 @@ export default class GamesSuccessChart extends Vue<Pie> {
         const data = Object.values(games)
         const labels = Object.keys(games).map(k => k === 'success' ? 'Database Hit' : 'Database Miss')
 
-        // @ts-ignore
         this.chartData = {
             labels,
             datasets: [{
                 backgroundColor: colors,
                 data,
-            }]
+            }],
         }
-    }
-
-    public mounted (): void {
-        // @ts-ignore
-        this.renderChart(this.chartData, this.options);
     }
 }
 </script>

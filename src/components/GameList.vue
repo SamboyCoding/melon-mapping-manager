@@ -1,8 +1,9 @@
 <template>
     <div id="game-list">
         <h3>Per-Game Config</h3>
-        <table v-if="games.length">
-            <thead>
+        <div v-if="games.length">
+            <table>
+                <thead>
                 <tr>
                     <th>Game Name</th>
                     <th>Mapping URL</th>
@@ -11,11 +12,12 @@
                     <th>Dumper Version Override</th>
                     <th>Purge SHA512</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <game-list-entry v-for="game in games" :key="game.gameSlug" :game="game"></game-list-entry>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
         <h2 v-else>Loading Games...</h2>
     </div>
 </template>
@@ -27,7 +29,7 @@ import Game from '@/model/Game'
 import GameListEntry from '@/components/GameListEntry.vue'
 
 @Component({
-    components: { GameListEntry }
+    components: { GameListEntry },
 })
 export default class GameList extends Vue {
     public async mounted (): Promise<void> {

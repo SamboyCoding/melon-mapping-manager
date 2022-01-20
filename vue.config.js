@@ -1,5 +1,6 @@
 module.exports = {
     productionSourceMap: false,
+    lintOnSave: false,
     configureWebpack: {
         plugins: [
 
